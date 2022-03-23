@@ -66,8 +66,8 @@ public class Passageiro extends Thread {
     private void avancarNaFila() {
         if (!estaNoElevador &&
             lugarNaFila > 1 &&
-            andarAtual == Elevador.getAndarAtual() &&
-            Elevador.getEstaOcupado() && 
+            andarAtual == predio.getElevador().getAndarAtual() &&
+            predio.getElevador().getEstaOcupado() && 
             chegouAoDestino) {
         
             if (Predio.getFilaSem().tryAcquire()) {
@@ -106,12 +106,12 @@ public class Passageiro extends Thread {
     private void entrarNoElevador() {
         if (!estaNoElevador && 
             lugarNaFila == 1 && 
-            andarAtual == Elevador.getAndarAtual() && 
-            !Elevador.getEstaOcupado() &&
-            Elevador.getEstaNoDestino() && 
+            andarAtual == predio.getElevador().getAndarAtual() && 
+            !predio.getElevador().getEstaOcupado() &&
+            predio.getElevador().getEstaNoDestino() && 
             chegouAoDestino) {
             
-            if (Elevador.getElevadorSem().tryAcquire()) {
+            if (predio.getElevador().getElevadorSem().tryAcquire()) {
                 abrirPorta();
                 while (posX > posXDestino) {
                     posX--;
@@ -127,7 +127,7 @@ public class Passageiro extends Thread {
                 chegouAoDestino = false;
                 lugarNaFila = 0;
                 predio.setFilas(andarAtual, false);
-                Elevador.setEstaOcupado(true);
+                predio.getElevador().setEstaOcupado(true);
                 fecharPorta();
 
                 Predio.setFilaSem(new Semaphore(predio.getFilas().get(andarAtual)));
@@ -144,8 +144,8 @@ public class Passageiro extends Thread {
     private void sairDoElevador() {
         if (estaNoElevador && 
             lugarNaFila == 0 && 
-            andarAtual == Elevador.getAndarAtual() &&
-            Elevador.getEstaNoDestino()) {
+            andarAtual == predio.getElevador().getAndarAtual() &&
+            predio.getElevador().getEstaNoDestino()) {
 
             Predio.setFilaSem(new Semaphore(0));
 
@@ -158,8 +158,8 @@ public class Passageiro extends Thread {
                     fecharPorta();
                     estaNoElevador = false;
                     lugarNaFila = -1;
-                    Elevador.setEstaOcupado(false);
-                    Elevador.getElevadorSem().release();
+                    predio.getElevador().setEstaOcupado(false);
+                    predio.getElevador().getElevadorSem().release();
                 }
                 predio.repintar();
                 
@@ -176,13 +176,13 @@ public class Passageiro extends Thread {
     private void chamarElevador() {
         if (!estaNoElevador &&
             lugarNaFila == 1 &&
-            andarAtual != Elevador.getAndarAtual() &&
-            !Elevador.getEstaOcupado() &&
-            Elevador.getEstaNoDestino() &&
-            Elevador.getPodeSerChamado() &&
+            andarAtual != predio.getElevador().getAndarAtual() &&
+            !predio.getElevador().getEstaOcupado() &&
+            predio.getElevador().getEstaNoDestino() &&
+            predio.getElevador().getPodeSerChamado() &&
             chegouAoDestino) {
 
-            if (Elevador.getElevadorSem().tryAcquire()) {
+            if (predio.getElevador().getElevadorSem().tryAcquire()) {
                 predio.getElevador().visitarAndar(andarAtual);
             }
         }

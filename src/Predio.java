@@ -63,8 +63,7 @@ public class Predio extends JPanel {
             for (Passageiro p : passageiros) {
                 p.draw(g);
             }    
-        }
-        
+        }        
     }
 
     public void setPassageiros(Passageiro[] passageiros) {

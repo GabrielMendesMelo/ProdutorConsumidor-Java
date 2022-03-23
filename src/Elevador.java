@@ -6,25 +6,25 @@ import javax.swing.ImageIcon;
 public class Elevador extends Thread {
     private volatile boolean rodando = false;
     private static final int INTERVALO_EXECUCAO = 32;
-    private static final Semaphore ELEVADOR_SEM = new Semaphore(1);
+    private final Semaphore ELEVADOR_SEM = new Semaphore(1);
 
-    private static int pos;
-    private static int posDestino;
-    private static int andarAtual;
-    private static int andarDestino;
+    private int pos;
+    private int posDestino;
+    private int andarAtual;
+    private int andarDestino;
 
     private static Predio predio;
     private static ImageIcon portaAberta;
     private static ImageIcon portaFechada;
 
-    private static boolean portaEstaAberta = false;
-    private static boolean chegouAoDestino = true;
-    private static boolean estaOcupado = false;
-    private static boolean podeSerChamado = false;
+    private boolean portaEstaAberta = false;
+    private boolean chegouAoDestino = true;
+    private boolean estaOcupado = false;
+    private boolean podeSerChamado = false;
 
     public Elevador(Predio predio, int posInicial, int andarInicial) {
-        Elevador.pos = posInicial;
-        Elevador.andarAtual = andarInicial;
+        this.pos = posInicial;
+        this.andarAtual = andarInicial;
 
         Elevador.predio = predio;
         
@@ -109,27 +109,27 @@ public class Elevador extends Thread {
         chegouAoDestino = false;
     }
 
-    public static boolean getEstaNoDestino() {
+    public boolean getEstaNoDestino() {
         return chegouAoDestino;
     }
 
-    public static int getAndarAtual() {
+    public int getAndarAtual() {
         return andarAtual;
     }
 
-    public static boolean getEstaOcupado() {
+    public boolean getEstaOcupado() {
         return estaOcupado;
     }
 
-    public static boolean getPodeSerChamado() {
+    public boolean getPodeSerChamado() {
         return podeSerChamado;
     }
 
-    public static void setEstaOcupado(boolean estaOcupado) {
-        Elevador.estaOcupado = estaOcupado;
+    public void setEstaOcupado(boolean estaOcupado) {
+        this.estaOcupado = estaOcupado;
     }
 
-    public static final Semaphore getElevadorSem() {
+    public final Semaphore getElevadorSem() {
         return ELEVADOR_SEM;
     }
 
