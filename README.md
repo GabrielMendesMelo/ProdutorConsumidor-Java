@@ -1,6 +1,5 @@
 # Problema Produtor-Consumidor em Java
 
-[![Badge licença](https://img.shields.io/github/license/GabrielMendesMelo/ProdutorConsumidor-Java?color=darkgreen&label=licen%C3%A7a)](https://github.com/GabrielMendesMelo/ProdutorConsumidor-Java/blob/main/LICENSE)
 
 Solução do problema produtor-consumidor em Java utilizando uma simulação de um prédio com um elevador e vários passageiros para a implementação.
 
