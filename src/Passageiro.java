@@ -8,8 +8,7 @@ import javax.swing.ImageIcon;
 
 public class Passageiro extends Thread {
     private volatile boolean rodando = false;
-    private static final int INTERVALO_EXECUCAO = Elevador.getIntervaloExecucao();
-    private static final int TEMPO_ESPERA = 100;
+    private final int TEMPO_ESPERA = 100;
 
     private int lugarNaFila;
     private int andarAtual;
@@ -19,7 +18,7 @@ public class Passageiro extends Thread {
     private int posXDestino;
     private int posYDestino;
 
-    private static final int POS_DENTRO_ELEVADOR = 10;
+    private final int POS_DENTRO_ELEVADOR = 10;
     
     private Predio predio;
     private ImageIcon img;
@@ -34,7 +33,7 @@ public class Passageiro extends Thread {
         this.posXDestino = POS_DENTRO_ELEVADOR;
         this.predio = predio;
 
-        this.posX = Elevador.getLargura() * lugarNaFila;
+        this.posX = predio.getElevador().getLargura() * lugarNaFila;
         this.posY = predio.getAndares().get(andarInicial).getPosY();
 
         img = new ImageIcon(getClass().getResource("./img/passageiro" + ThreadLocalRandom.current().nextInt(1, 9) + ".png"));
@@ -73,14 +72,14 @@ public class Passageiro extends Thread {
             if (Predio.getFilaSem().tryAcquire()) {
                 chegouAoDestino = false;
                 lugarNaFila--;
-                posXDestino = Elevador.getLargura() * lugarNaFila;
+                posXDestino = predio.getElevador().getLargura() * lugarNaFila;
                 
                 while (posX > posXDestino) {
                     posX--;
                     predio.repintar();
                     
                     try {
-                        Thread.sleep(INTERVALO_EXECUCAO / 6);
+                        Thread.sleep(predio.INTERVALO_EXECUCAO / 6);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -118,7 +117,7 @@ public class Passageiro extends Thread {
                     predio.repintar();
                     
                     try {
-                        Thread.sleep(INTERVALO_EXECUCAO / 6);
+                        Thread.sleep(predio.INTERVALO_EXECUCAO / 6);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -154,7 +153,7 @@ public class Passageiro extends Thread {
             abrirPorta();
             while (posX < posXDestino) {
                 posX++;
-                if (estaNoElevador && posX >= Elevador.getLargura()) {
+                if (estaNoElevador && posX >= predio.getElevador().getLargura()) {
                     fecharPorta();
                     estaNoElevador = false;
                     lugarNaFila = -1;
@@ -164,7 +163,7 @@ public class Passageiro extends Thread {
                 predio.repintar();
                 
                 try {
-                    Thread.sleep(INTERVALO_EXECUCAO / 10);
+                    Thread.sleep(predio.INTERVALO_EXECUCAO / 10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -221,7 +220,7 @@ public class Passageiro extends Thread {
             update();
 
             try {
-                Thread.sleep(INTERVALO_EXECUCAO);
+                Thread.sleep(predio.INTERVALO_EXECUCAO);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -238,7 +237,7 @@ public class Passageiro extends Thread {
 
     public void visitarAndar(int andar) {
         andarDestino = andar;
-        posXDestino = Elevador.getLargura() * (predio.getFilas().get(andarDestino) + 1);
+        posXDestino = predio.getElevador().getLargura() * (predio.getFilas().get(andarDestino) + 1);
         predio.getElevador().visitarAndar(andar);
         posYDestino = predio.getAndares().get(andar).getPosY();
         chegouAoDestino = false;        

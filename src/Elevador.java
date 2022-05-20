@@ -5,7 +5,6 @@ import javax.swing.ImageIcon;
 
 public class Elevador extends Thread {
     private volatile boolean rodando = false;
-    private static final int INTERVALO_EXECUCAO = 32;
     private final Semaphore ELEVADOR_SEM = new Semaphore(1);
 
     private int pos;
@@ -13,9 +12,9 @@ public class Elevador extends Thread {
     private int andarAtual;
     private int andarDestino;
 
-    private static Predio predio;
-    private static ImageIcon portaAberta;
-    private static ImageIcon portaFechada;
+    private Predio predio;
+    private ImageIcon portaAberta;
+    private ImageIcon portaFechada;
 
     private boolean portaEstaAberta = false;
     private boolean chegouAoDestino = true;
@@ -26,7 +25,7 @@ public class Elevador extends Thread {
         this.pos = posInicial;
         this.andarAtual = andarInicial;
 
-        Elevador.predio = predio;
+        this.predio = predio;
         
         portaAberta = new ImageIcon(getClass().getResource("./img/elevador-aberto.png"));
         portaFechada = new ImageIcon(getClass().getResource("./img/elevador-fechado.png"));
@@ -82,13 +81,13 @@ public class Elevador extends Thread {
             mover();
 
             try {
-                Thread.sleep(INTERVALO_EXECUCAO);
+                Thread.sleep(predio.INTERVALO_EXECUCAO);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
-    public static int getLargura() {
+    public int getLargura() {
         return portaAberta.getIconWidth();
     }
 
@@ -133,11 +132,7 @@ public class Elevador extends Thread {
         return ELEVADOR_SEM;
     }
 
-    public static final int getIntervaloExecucao() {
-        return INTERVALO_EXECUCAO;
-    }
-
-    private static boolean acabou() {
+    private boolean acabou() {
         for (int i : predio.getFilas()) {
             if (i > 0) {
                 return false;

@@ -7,6 +7,8 @@ import java.util.Collections;
 import javax.swing.JPanel;
 
 public class Predio extends JPanel {
+    public final int INTERVALO_EXECUCAO = 32; 
+
     private final int N_ANDARES;
     private static Semaphore filaSem = new Semaphore(0);
     
