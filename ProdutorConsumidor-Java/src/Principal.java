@@ -5,9 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Principal {
     private List<Passageiro> passageiros = new ArrayList<>();
     private static Predio predio;
-    private static final int N_ANDARES = 8;
-    private static final int N_PASSAGEIROS = ThreadLocalRandom.current().nextInt(10, 50);
-    private static final int ANDAR_INICIAL = ThreadLocalRandom.current().nextInt(0, N_ANDARES);
+    private final int N_ANDARES = 8;
+    private final int N_PASSAGEIROS = ThreadLocalRandom.current().nextInt(10, 50);
+    private final int ANDAR_INICIAL = ThreadLocalRandom.current().nextInt(0, N_ANDARES);
 
     private List<Integer> filas = new ArrayList<>();
 
